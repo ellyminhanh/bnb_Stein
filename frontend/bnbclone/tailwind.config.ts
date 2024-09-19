@@ -10,7 +10,7 @@ const config: Config = {
     extend: {
       colors: {
         'airbnb': '#ff385c',
-        'airbnb-dark': '#d5007'
+        'airbnb-dark': '#D70466'
       },
     },
   },
