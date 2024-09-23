@@ -14,7 +14,7 @@ const PropertyDetailPage = () => {
           />
         </div>
 
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             <div className="py-6 pr-6 col-span-3">
                 <h1 className="mb-4 text-4xl">Name</h1>
                 <span className="mb-6 block text-lg text-gray-600">
@@ -42,13 +42,9 @@ const PropertyDetailPage = () => {
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos assumenda ratione perferendis laboriosam, at officiis expedita tempore sint numquam omnis minus dolor dolorum qui, explicabo quae, quas perspiciatis nulla voluptate?
                 </p>
             </div>
-
             
-                <ReservationSidebar />
-
-            
-
-        </div>
+            <ReservationSidebar />
+          </div>
 
     </main>
   )
