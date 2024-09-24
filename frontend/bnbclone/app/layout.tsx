@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
-import Modal from "./components/Modals/Modal";
+import LoginModal from "./components/Modals/LogInModal";
+import SignupModal from "./components/Modals/SignupModal";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -35,7 +37,8 @@ export default function RootLayout({
         <div className="pt-32">
           {children}
         </div>
-
+        <LoginModal />
+        <SignupModal />
       </body>
     </html>
   );
