@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if [ "$DATABASE" = "postgres" ]; then
     echo "Check if database is running..."

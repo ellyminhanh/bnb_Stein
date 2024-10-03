@@ -17,4 +17,5 @@ RUN chmod +x /usr/src/airbnb_backend/entrypoint.sh
 
 COPY . . 
 
-ENTRYPOINT [ "/usr/src/airbnb_backend/entrypoint.sh" ]
+ENTRYPOINT [ "sh","/usr/src/airbnb_backend/entrypoint.sh" ]
+

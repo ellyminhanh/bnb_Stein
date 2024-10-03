@@ -12,6 +12,7 @@ services:
       - .env.dev
     depends_on:
       - db
+    entrypoint: /usr/src/airbnb_backend/entrypoint.sh  
   db:
     image: postgres:15
     volumes:
