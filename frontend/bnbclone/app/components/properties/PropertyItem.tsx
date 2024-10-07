@@ -12,7 +12,8 @@ const PropertyItems: React.FC<PropertyProps> = ({
         <div className="cursor-pointer">
             <div className="relative overflow-hidden aspect-square rounded-xl">
                 <Image
-                    fill
+                    fill={true}
+                    priority={true}
                     src={property.image_url}
                     sizes="(max-width: 768px) 768px, (max-width: 1200px) 768px, 768px"
                     className="hover:scale-110 object-cover transition h-full w-full" 

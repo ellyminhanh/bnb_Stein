@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import PropertyItems from "./PropertyItem";
+import apiService from '@/app/services/apiService';
 
 export type PropertyType = {
   id: string;
@@ -13,21 +14,10 @@ const PropertyList = () => {
   const [properties, setProperties] = useState<PropertyType[]>([]);
   
   const getProperties = async () => {
-    const url = 'http://localhost:8000/api/properties'
-    try {
-      const response = await fetch(url);
-      const json = await response.json();
-      
-      // Add this console.log to inspect the image URLs
-      json.data.forEach((property: PropertyType) => {
-        console.log('Image URL:', property.image_url);
-      });
-
-      setProperties(json.data);
-    } catch (error) {
-      console.log('error', error);
-    }
-  };
+    const tmpProperties = await apiService.get('/api/properties')
+    setProperties(tmpProperties.data);
+  }
+  
 
   useEffect(() => {
     getProperties()
