@@ -41,7 +41,7 @@ const Modal: React.FC<ModalProps> = ({
                     <div className="w-full h-auto rounded-xl relative flex flex-col bg-white">
                         <header className="h-[60px] flex items-center p-6 rounded-t justify-center relative border -b">
                             <div 
-                                onClick={handleCloses}
+                                onClick={handleClose}
                                 className="p-3 absolute left-3 hover:bg-gray-300 rounded-full cursor-pointer"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">

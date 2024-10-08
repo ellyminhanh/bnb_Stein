@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 interface SignupModalStore {
+    current: any;
     isOpen: boolean;
     open :() => void;
     close: () => void;

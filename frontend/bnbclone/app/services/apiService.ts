@@ -2,7 +2,7 @@ import { error } from "console";
 
 const apiService = {
     get: async function (url: string): Promise<any>{
-        console.log('get', url); 
+        // console.log('get', url); 
 
         return new Promise((resolve, reject) =>{
             fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, {
@@ -31,12 +31,10 @@ const apiService = {
 
         return new Promise((resolve, reject) =>{
             fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, {
-                method: 'POST',
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json'},
                 body: data,
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
+                
             })
                     .then(response => response.json())
                     .then((json) => {
