@@ -14,7 +14,11 @@ const apiService = {
             })
                 .then(response => response.json())
                 .then((json) => {
-                    console.log('Response:', json);
+                    
+                    
+                    const { access, refresh, ...rest } = json;  // Exclude sensitive fields (e.g., tokens)
+                    // console.log('Response without sensitive data:', rest);
+                    
 
                     resolve(json);
                 })
@@ -26,7 +30,7 @@ const apiService = {
     },
 
     post: async function(url: string, data:any): Promise<any> {
-        console.log('post', url,data);
+        // console.log('post', url);
 
 
         return new Promise((resolve, reject) =>{
@@ -38,8 +42,9 @@ const apiService = {
             })
                     .then(response => response.json())
                     .then((json) => {
-                        console.log('Response:', json);
-
+                        const { access, refresh, ...rest } = json;  // Exclude sensitive fields (e.g., tokens)
+                        console.log('Response without sensitive data:', rest);
+                        
                         resolve(json);
                     })
                     .catch((error =>{

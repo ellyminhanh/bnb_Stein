@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import useSignupModal from "@/app/hooks/useSignupModal";
 import CustomButton from "../forms/CustomButton";
 import apiService from "@/app/services/apiService";
+import { handleLogin } from "@/app/lib/actions";
 
 const SignupModal = () => {
 
@@ -20,7 +21,10 @@ const SignupModal = () => {
 
     // function
 
-    const submitSignup = async () => {
+    const submitSignup = async (e: React.FormEvent) => {
+        e.preventDefault(); // Prevent form from reloading the page
+        setErrors([]); // Clear previous errors
+
         const formdata = {
             email: email,
             password1:password1,
@@ -29,16 +33,18 @@ const SignupModal = () => {
 
         const response = await apiService.post('/api/auth/register/',JSON.stringify(formdata));
         
-        if(response.acess){
+        if(response.access){
+
+            handleLogin(response.user.pk, response.access, response.refresh); 
 
             signupModal.close();
             router.push('/')
 
         }else {
-            const tmpErrors: string[] = Object.values(response).map((error: any) => {
-                return error;
-            })
-
+            const tmpErrors: string[] = [];
+            if (response.email) tmpErrors.push(...response.email);
+            if (response.password1) tmpErrors.push(...response.password1);
+            if (response.password2) tmpErrors.push(...response.password2);
             setErrors(tmpErrors);
         }
     }
