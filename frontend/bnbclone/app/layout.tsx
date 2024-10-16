@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
 import LoginModal from "./components/Modals/LogInModal";
 import SignupModal from "./components/Modals/SignupModal";
+import AddPropertyModal from "./components/Modals/AddPropertyModal";
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -39,6 +41,7 @@ export default function RootLayout({
         </div>
         <LoginModal />
         <SignupModal />
+        <AddPropertyModal />
       </body>
     </html>
   );
