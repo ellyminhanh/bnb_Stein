@@ -29,4 +29,14 @@ export async function handleLogin(userId: string, accessToken: string, refreshTo
     });
 }
 
+export async function resetAuthCookies () {
+    cookies().set('session_userID','');
+    cookies().set('session_acc','');
+    cookies().set('session_refresh_token','');
+}
 
+
+export async function getUserID() {
+    const userID = cookies().get('session_userID')?.value
+    return userID ? userID : null 
+}
