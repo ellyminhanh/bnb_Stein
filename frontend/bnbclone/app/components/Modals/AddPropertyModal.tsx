@@ -6,6 +6,7 @@ import Modal from "./Modal";
 import useAddPropertyModal from "@/app/hooks/useAddPropertyModal";
 import CustomButton from "../forms/CustomButton";
 import Categories from "../addproperty/Categories";
+import SelectCountry, { SelectCountryValue } from "../forms/SelectCountry";
 
 const AddPropertyModal = () =>{
     const [currentStep,setCurrentStep] = useState(1)
@@ -16,7 +17,7 @@ const AddPropertyModal = () =>{
     const [dataBedroom, setDatabedroom] = useState('');
     const [dataBathroom, setDatabathroom] = useState('');
     const [dataGuest, setDataguest] = useState('');
-
+    const [dataCountry, setDatacountry] = useState<SelectCountryValue>();
 
     const addPropertyModal = useAddPropertyModal();
 
@@ -145,12 +146,15 @@ const AddPropertyModal = () =>{
                         className="mt-6"
                     />
                 </>
-            ) : currentStep ==4 ? (
+            ) : currentStep == 4 ? (
                 <>
                     <h2 className="mb-6 text-2xl">Location</h2>
 
                     <div className="pt-3 pb-6 space-y-4">
-                        testst div 153
+                        <SelectCountry 
+                            value= {dataCountry}
+                            onChange={(value) => setDatacountry(value as SelectCountryValue)}
+                        />
                     </div>
 
                     <CustomButton 
