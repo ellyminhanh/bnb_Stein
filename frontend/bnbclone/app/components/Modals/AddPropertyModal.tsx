@@ -1,14 +1,20 @@
 'use client'
 
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Image from "next/image";
 import Modal from "./Modal";
 import useAddPropertyModal from "@/app/hooks/useAddPropertyModal";
 import CustomButton from "../forms/CustomButton";
 import Categories from "../addproperty/Categories";
 import SelectCountry, { SelectCountryValue } from "../forms/SelectCountry";
+import apiService from "@/app/services/apiService";
+import { useRouter } from "next/navigation";
+
 
 const AddPropertyModal = () =>{
+
+    //state
+
     const [currentStep,setCurrentStep] = useState(1)
     const [dataCategory,setDatacategory] = useState('');
     const [dataTitle, setDatatittle] = useState('');
@@ -18,12 +24,57 @@ const AddPropertyModal = () =>{
     const [dataBathroom, setDatabathroom] = useState('');
     const [dataGuest, setDataguest] = useState('');
     const [dataCountry, setDatacountry] = useState<SelectCountryValue>();
+    const [dataImage, setDataimage] = useState<File | null>(null);
+
 
     const addPropertyModal = useAddPropertyModal();
+    const router = useRouter();
+
+
+    // parse in data
 
     const setCategory = (category : string) => {
         setDatacategory(category)
     }
+
+    const setImage = (event: ChangeEvent<HTMLInputElement>) => {
+        if (event.target.files && event.target.files.length>0) {
+            const tmpImage = event.target.files[0];
+            setDataimage(tmpImage);
+        }
+    }
+
+    // submit all the data users put in
+
+    const submitForm = async () => {
+        console.log('submit form');
+
+        if(dataTitle && dataDescription  && dataImage && dataCountry) {
+            const formData = new FormData();
+            formData.append('category',dataCategory);
+            formData.append('title',dataTitle);
+            formData.append('description',dataDescription);
+            formData.append('price',dataPrice);
+            formData.append('bedroom',dataBedroom);
+            formData.append('bathroom',dataBathroom);
+            formData.append('guests',dataGuest);
+            formData.append('country',dataCountry.label);
+            formData.append('country_code',dataCountry.value);
+            formData.append('image',dataImage);
+
+            const response = await apiService.post('/api/properties/create/',formData)
+
+            if(response.success){
+                console.log('posted sucessful!');
+                router.push('/');
+                addPropertyModal.close();
+            }else{
+                console.log('eroor')
+            }
+        
+        }
+    }
+
 
     const content = (
         <>
@@ -169,6 +220,47 @@ const AddPropertyModal = () =>{
                         className="mt-6"
                     />
                 </>
+            
+            ) : currentStep == 5 ? (
+                <>
+                    <h2 className="mb-6 text-2xl">Image</h2>
+
+                    <div className="pt-3 pb-6 space-y-4">
+                        <div className="py-4 px-6 bg-gray-600 text-white rounded-xl">
+                            <input 
+                                type="file"
+                                accept="image/*"
+                                onChange={setImage}
+                            />
+                        </div>
+
+                        {dataImage && (
+                            <div className="w-[200px] h-[150px] relative">
+                                <Image
+                                    fill
+                                    alt='uploaded image'
+                                    src={URL.createObjectURL(dataImage)}
+                                    className="h-full object-cover rounded-xl"
+                                />
+                            </div>
+                        )}
+
+                    </div>
+
+
+                    <CustomButton 
+                        label="Previous"
+                        onClick={() => setCurrentStep(4)}
+                        className="mb-6 bg-black hover:bg-gray-800"
+                    />
+
+                    <CustomButton 
+                        label="Submit"
+                        onClick={submitForm}
+                        className="mt-6"
+                    />
+                </>
+
             ) : (
                 <p>test</p>
             ) }
