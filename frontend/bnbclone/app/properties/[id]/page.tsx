@@ -1,10 +1,12 @@
 import Image from "next/image";
 import ReservationSidebar from "@/app/components/properties/ReservationSidebar";
 import apiService from "@/app/services/apiService";
+import { getUserID } from "@/app/lib/actions";
 
 const PropertyDetailPage = async ({params}:{params:{id:string }}) => {
   const property = await apiService.get(`/api/properties/${params.id}`)
-  console.log("property data:", property);
+  const userID = await getUserID();
+
   return (
     <main className="max-w-[1500px] mx-auto px-6 pb-6">      
         <div className="w-full h-[60vh] mb-4 overflow-hidden rounded-xl relative">
@@ -47,6 +49,7 @@ const PropertyDetailPage = async ({params}:{params:{id:string }}) => {
             
             <ReservationSidebar
               property={property}
+              userID={userID}
             />
           </div>
 
