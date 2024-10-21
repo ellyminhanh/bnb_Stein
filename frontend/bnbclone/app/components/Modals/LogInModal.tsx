@@ -23,7 +23,7 @@ const LoginModal = () => {
             password: password
         }
 
-        const response = await apiService.post('/api/auth/login/', JSON.stringify(formData)); 
+        const response = await apiService.postWithoutToken('/api/auth/login/', JSON.stringify(formData)); 
 
         if(response.access){
 
@@ -33,7 +33,7 @@ const LoginModal = () => {
             router.push('/')
 
         } else {
-            setErrors(response.non_field_errors);
+            setErrors(response.non_field_errors); 
         }
     }
 
@@ -46,7 +46,7 @@ const LoginModal = () => {
             >
                 <input onChange={(e) => setEmail(e.target.value)} placeholder="Type in your email" type="email" className="w-full h-[54px] border px-4 border-gray-300 rounded-xl" />
                 <input onChange={(e) => setPassword(e.target.value)} placeholder="Type in your password" type="password" className="w-full h-[54px] border px-4 border-gray-300 rounded-xl" />
-                {errors.map((error, index) => { 
+                {errors.length > 0 && errors.map((error, index) => { 
                     return(
                         <div 
                             key={`error_${index}`}

@@ -11,11 +11,12 @@ import apiService from "@/app/services/apiService";
 import { useRouter } from "next/navigation";
 
 
-const AddPropertyModal = () =>{
+const AddPropertyModal = () => {
 
     //state
 
-    const [currentStep,setCurrentStep] = useState(1)
+    const [currentStep,setCurrentStep] = useState(1);
+    const [errors, setErrors] = useState<string[]>([]);
     const [dataCategory,setDatacategory] = useState('');
     const [dataTitle, setDatatittle] = useState('');
     const [dataDescription, setDatadescription] = useState('');
@@ -54,9 +55,9 @@ const AddPropertyModal = () =>{
             formData.append('category',dataCategory);
             formData.append('title',dataTitle);
             formData.append('description',dataDescription);
-            formData.append('price',dataPrice);
-            formData.append('bedroom',dataBedroom);
-            formData.append('bathroom',dataBathroom);
+            formData.append('price_per_night',dataPrice);
+            formData.append('bedrooms',dataBedroom);
+            formData.append('bathrooms',dataBathroom);
             formData.append('guests',dataGuest);
             formData.append('country',dataCountry.label);
             formData.append('country_code',dataCountry.value);
@@ -64,15 +65,21 @@ const AddPropertyModal = () =>{
 
             const response = await apiService.post('/api/properties/create/',formData)
 
-            if(response.success){
-                console.log('posted sucessful!');
-                router.push('/');
+            if (response.success) {
+                console.log('SUCCESS :-D');
+
+                router.push('/?added=true');
+
                 addPropertyModal.close();
-            }else{
-                console.log('eroor')
+            } else {
+                console.log('Error');
+
+                const tmpErrors: string[] = Object.values(response).map((error: any) => {
+                    return error;
+                })
+
+                setErrors(tmpErrors)
             }
-        
-        }
     }
 
 
@@ -246,7 +253,18 @@ const AddPropertyModal = () =>{
                         )}
 
                     </div>
+                        
 
+                   {errors.map((error, index) => {
+                        return(
+                            <div
+                                key={index}
+                                className="p-5 mb-4 bg-airbnb text-white rounded-xl opacity-80"
+                            >
+                                {error}
+                            </div>
+                        )
+                    })}
 
                     <CustomButton 
                         label="Previous"
@@ -278,6 +296,6 @@ const AddPropertyModal = () =>{
             ></Modal>
         </>
     )
-}
+}}
 
 export default AddPropertyModal;
