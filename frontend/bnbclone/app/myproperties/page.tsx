@@ -1,4 +1,6 @@
 import Image from "next/image"
+import apiService from "../services/apiService"
+
 import { getUserID } from "../lib/actions"
 import PropertyList from "../components/properties/PropertyList"
 

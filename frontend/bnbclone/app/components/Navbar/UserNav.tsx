@@ -61,8 +61,20 @@ const UserNav: React.FC<UserNavProps> =  ({
                                     router.push(`/myproperties`);
                                 }}
                             />
+
+                            <MenuLink 
+                                label="My Reservation"
+                                onClick={()=> {
+                                    setIsOpen(false);
+                                    router.push(`/myreservation`);
+                                }}
+                            /> 
+
                             <LogoutButton/>
                         </> 
+
+
+
                     ) : (
                         <>
                             
