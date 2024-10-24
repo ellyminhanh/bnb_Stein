@@ -35,7 +35,8 @@ def properties_detail(request,pk):
 @authentication_classes([])
 @permission_classes([])
 def property_reservation(request,pk):
-    reservations = Reservation.objects.filter(user=request.user)
+    property = Property.objects.get(pk=pk)
+    reservations = property.reservations.all()
     serializer = ReservationListSerializer(reservations, many=True)
     return JsonResponse(serializer.data, safe=False)
    
