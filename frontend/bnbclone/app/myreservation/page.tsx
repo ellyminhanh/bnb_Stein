@@ -14,12 +14,12 @@ const MyReservationPage = () => {
     useEffect(() => {
         const fetchReservations = async () => {
             try {
-                console.log('Fetching reservations...'); // Debug log
+                //console.log('Fetching reservations...'); // Debug log
                 const data = await apiService.get('/api/auth/myreservation/');
-                console.log('Received data:', data); // Debug log
+                //console.log('Received data:', data); // Debug log
                 setReservations(data);
             } catch (error) {
-                console.error('Error fetching reservations:', error);
+                //console.error('Error fetching reservations:', error);
                 setError('Failed to load reservations');
             } finally {
                 setLoading(false);

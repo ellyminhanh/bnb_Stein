@@ -47,7 +47,7 @@ const apiService = {
                     .then(response => response.json())
                     .then((json) => {
                         const { access, refresh, ...rest } = json;  // Exclude sensitive fields (e.g., tokens)
-                        console.log('Response without sensitive data:', rest);
+                        //console.log('Response without sensitive data:', rest);
                         
                         resolve(json);
                     })
@@ -72,7 +72,7 @@ const apiService = {
                     .then(response => response.json())
                     .then((json) => {
                         const { access, refresh, ...rest } = json;  // Exclude sensitive fields (e.g., tokens)
-                        console.log('Response without sensitive data:', rest);
+                        //console.log('Response without sensitive data:', rest);
                         
                         resolve(json);
                     })
