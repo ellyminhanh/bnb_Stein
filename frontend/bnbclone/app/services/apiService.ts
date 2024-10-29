@@ -60,8 +60,7 @@ const apiService = {
     postWithoutToken: async function(url: string, data:any): Promise<any> {
         // console.log('post', url);
 
-        
-
+    
         return new Promise((resolve, reject) =>{
             fetch(`${process.env.NEXT_PUBLIC_API_HOST}${url}`, {
                 method: 'POST', 

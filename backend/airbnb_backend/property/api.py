@@ -65,19 +65,21 @@ def property_reservation(request,pk):
     serializer = ReservationListSerializer(reservations, many=True)
     return JsonResponse(serializer.data, safe=False)
    
-    
-@api_view(['POST','FILES'])
+# create add property
+@api_view(['POST', 'FILES'])
 def create_property(request):
     form = PropertyForm(request.POST, request.FILES)
-    
+
     if form.is_valid():
         property = form.save(commit=False)
         property.landlord = request.user
         property.save()
-        return JsonResponse({'scucess': True})
+
+        return JsonResponse({'success': True})
     else:
         print('error', form.errors, form.non_field_errors)
-        return JsonResponse({'errors': form.errors.as_json()},status = 400)
+        return JsonResponse({'errors': form.errors.as_json()}, status=400)
+
     
     
 @api_view(['POST'])

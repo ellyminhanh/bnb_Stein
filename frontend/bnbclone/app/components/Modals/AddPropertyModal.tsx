@@ -1,69 +1,82 @@
-'use client'
+'use client';
 
-import { ChangeEvent, useState } from "react";
-import Image from "next/image";
-import Modal from "./Modal";
-import useAddPropertyModal from "@/app/hooks/useAddPropertyModal";
-import CustomButton from "../forms/CustomButton";
-import Categories from "../addproperty/Categories";
-import SelectCountry, { SelectCountryValue } from "../forms/SelectCountry";
-import apiService from "@/app/services/apiService";
-import { useRouter } from "next/navigation";
+import Image from 'next/image';
 
+import { ChangeEvent, useState } from 'react';
+import Modal from './Modal';
+import CustomButton from '../forms/CustomButton';
+import Categories from '../addproperty/Categories';
+
+import useAddPropertyModal from '@/app/hooks/useAddPropertyModal';
+import SelectCountry, {SelectCountryValue} from '../forms/SelectCountry';
+
+import apiService from '@/app/services/apiService';
+import { useRouter } from 'next/navigation';
 
 const AddPropertyModal = () => {
+    //
+    // States
 
-    //state
-
-    const [currentStep,setCurrentStep] = useState(1);
+    const [currentStep, setCurrentStep] = useState(1);
     const [errors, setErrors] = useState<string[]>([]);
-    const [dataCategory,setDatacategory] = useState('');
-    const [dataTitle, setDatatittle] = useState('');
-    const [dataDescription, setDatadescription] = useState('');
-    const [dataPrice, setDataprice] = useState('');
-    const [dataBedroom, setDatabedroom] = useState('');
-    const [dataBathroom, setDatabathroom] = useState('');
-    const [dataGuest, setDataguest] = useState('');
-    const [dataCountry, setDatacountry] = useState<SelectCountryValue>();
-    const [dataImage, setDataimage] = useState<File | null>(null);
+    const [dataCategory, setDataCategory] = useState('');
+    const [dataTitle, setDataTitle] = useState('');
+    const [dataDescription, setDataDescription] = useState('');
+    const [dataPrice, setDataPrice] = useState('');
+    const [dataBedrooms, setDataBedrooms] = useState('');
+    const [dataBathrooms, setDataBathrooms] = useState('');
+    const [dataGuests, setDataGuests] = useState('');
+    const [dataCountry, setDataCountry] = useState<SelectCountryValue>();
+    const [dataImage, setDataImage] = useState<File | null>(null);
 
+    //
+    //
 
     const addPropertyModal = useAddPropertyModal();
     const router = useRouter();
 
+    //
+    // Set datas
 
-    // parse in data
-
-    const setCategory = (category : string) => {
-        setDatacategory(category)
+    const setCategory = (category: string) => {
+        setDataCategory(category)
     }
 
     const setImage = (event: ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files.length>0) {
+        if (event.target.files && event.target.files.length > 0) {
             const tmpImage = event.target.files[0];
-            setDataimage(tmpImage);
+
+            setDataImage(tmpImage);
         }
     }
 
-    // submit all the data users put in
+    //
+    // SUbmit
 
     const submitForm = async () => {
-        console.log('submit form');
+        console.log('submitForm');
 
-        if(dataTitle && dataDescription  && dataImage && dataCountry) {
+        if (
+            dataCategory &&
+            dataTitle &&
+            dataDescription &&
+            dataPrice &&
+            dataCountry &&
+            dataImage
+        ) {
             const formData = new FormData();
-            formData.append('category',dataCategory);
-            formData.append('title',dataTitle);
-            formData.append('description',dataDescription);
-            formData.append('price_per_night',dataPrice);
-            formData.append('bedrooms',dataBedroom);
-            formData.append('bathrooms',dataBathroom);
-            formData.append('guests',dataGuest);
-            formData.append('country',dataCountry.label);
-            formData.append('country_code',dataCountry.value);
-            formData.append('image',dataImage);
+            formData.append('category', dataCategory);
+            formData.append('title', dataTitle);
+            formData.append('description', dataDescription);
+            formData.append('price_per_night', dataPrice);
+            formData.append('bedrooms', dataBedrooms);
+            formData.append('bathrooms', dataBathrooms);
+            formData.append('guests', dataGuests);
+            formData.append('country', dataCountry.label);
+            formData.append('country_code', dataCountry.value);
+            formData.append('image', dataImage);
 
-            const response = await apiService.post('/api/properties/create/',formData)
+            const response = await apiService.post('/api/properties/create/', formData);
 
             if (response.success) {
                 console.log('SUCCESS :-D');
@@ -80,222 +93,204 @@ const AddPropertyModal = () => {
 
                 setErrors(tmpErrors)
             }
+        }
     }
 
+    //
+    //
 
     const content = (
         <>
             {currentStep == 1 ? (
                 <>
-                    <h2 className="mb-6 text-2xl">Choose category</h2>
+                    <h2 className='mb-6 text-2xl'>Choose category</h2>
+
                     <Categories
-                        dataCategory ={dataCategory}
+                        dataCategory={dataCategory}
                         setCategory={(category) => setCategory(category)}
                     />
 
-                    
-                    <CustomButton 
-                        label="Next"
+                    <CustomButton
+                        label='Next'
                         onClick={() => setCurrentStep(2)}
-                        className="mt-6"
                     />
                 </>
             ) : currentStep == 2 ? (
                 <>
-                    <h2 className="mb-6 text-2xl">Describe your place</h2>
+                    <h2 className='mb-6 text-2xl'>Describe your place</h2>
 
                     <div className='pt-3 pb-6 space-y-4'>
-                        <div className="flex flex-col space-y-2">
+                        <div className='flex flex-col space-y-2'>
                             <label>Title</label>
-                            <input 
-                                type="text" 
-                                value = {dataTitle}
-                                onChange={(e) => setDatatittle(e.target.value)} 
-                                className="w-full p-4 border border-gray-600 rounded-xl"
+                            <input
+                                type="text"
+                                value={dataTitle}
+                                onChange={(e) => setDataTitle(e.target.value)}
+                                className='w-full p-4 border border-gray-600 rounded-xl'
                             />
                         </div>
-                    </div>
 
-                    <div className='pt-3 pb-6 space-y-4'>
-                        <div className="flex flex-col space-y-2">
+                        <div className='flex flex-col space-y-2'>
                             <label>Description</label>
-                            <textarea 
-                                value = {dataDescription}
-                                onChange={(e) => setDatadescription(e.target.value)} 
-                                className="w-full h-[200px] p-4 border border-gray-600 rounded-xl"
+                            <textarea
+                                value={dataDescription}
+                                onChange={(e) => setDataDescription(e.target.value)}
+                                className='w-full h-[200px] p-4 border border-gray-600 rounded-xl'
                             ></textarea>
                         </div>
                     </div>
 
-                    <CustomButton 
-                        label="Previous"
+                    <CustomButton
+                        label='Previous'
+                        className='mb-2 bg-black hover:bg-gray-800'
                         onClick={() => setCurrentStep(1)}
-                        className="mb-6 bg-black hover:bg-gray-800"
                     />
 
-                    <CustomButton 
-                        label="Next"
+                    <CustomButton
+                        label='Next'
                         onClick={() => setCurrentStep(3)}
-                        className="mt-6"
                     />
-
                 </>
-            ) :  currentStep == 3 ? (
+            ) : currentStep == 3 ? (
                 <>
-                    <h2 className="mb-6 text-2xl">Details</h2>
+                    <h2 className='mb-6 text-2xl'>Details</h2>
 
                     <div className='pt-3 pb-6 space-y-4'>
-                        <div className="flex flex-col space-y-2">
-                            <label>Price per night </label>
-                            <input 
-                                type="number" 
-                                value = {dataPrice}
-                                onChange={(e) => setDataprice(e.target.value)} 
-                                className="w-full p-4 border border-gray-600 rounded-xl"
+                        <div className='flex flex-col space-y-2'>
+                            <label>Price per night</label>
+                            <input
+                                type="number"
+                                value={dataPrice}
+                                onChange={(e) => setDataPrice(e.target.value)}
+                                className='w-full p-4 border border-gray-600 rounded-xl'
                             />
                         </div>
-                    </div>
 
-                    <div className='pt-3 pb-6 space-y-4'>
-                        <div className="flex flex-col space-y-2">
-                            <label>Bedrooms </label>
-                            <input 
-                                type="number" 
-                                value = {dataBedroom}
-                                onChange={(e) => setDatabedroom(e.target.value)} 
-                                className="w-full p-4 border border-gray-600 rounded-xl"
+                        <div className='flex flex-col space-y-2'>
+                            <label>Bedrooms</label>
+                            <input
+                                type="number"
+                                value={dataBedrooms}
+                                onChange={(e) => setDataBedrooms(e.target.value)}
+                                className='w-full p-4 border border-gray-600 rounded-xl'
                             />
                         </div>
-                    </div>
 
-                    <div className='pt-3 pb-6 space-y-4'>
-                        <div className="flex flex-col space-y-2">
+                        <div className='flex flex-col space-y-2'>
                             <label>Bathrooms</label>
-                            <input 
-                                type="number" 
-                                value = {dataBathroom}
-                                onChange={(e) => setDatabathroom(e.target.value)} 
-                                className="w-full p-4 border border-gray-600 rounded-xl"
+                            <input
+                                type="number"
+                                value={dataBathrooms}
+                                onChange={(e) => setDataBathrooms(e.target.value)}
+                                className='w-full p-4 border border-gray-600 rounded-xl'
+                            />
+                        </div>
+
+                        <div className='flex flex-col space-y-2'>
+                            <label>Maximum number of guests</label>
+                            <input
+                                type="number"
+                                value={dataGuests}
+                                onChange={(e) => setDataGuests(e.target.value)}
+                                className='w-full p-4 border border-gray-600 rounded-xl'
                             />
                         </div>
                     </div>
 
-                    <div className='pt-3 pb-6 space-y-4'>
-                        <div className="flex flex-col space-y-2">
-                            <label>Maximize number of guests </label>
-                            <input 
-                                type="number" 
-                                value = {dataGuest}
-                                onChange={(e) => setDataguest(e.target.value)} 
-                                className="w-full p-4 border border-gray-600 rounded-xl"
-                            />
-                        </div>
-                    </div>
-
-                    <CustomButton 
-                        label="Previous"
+                    <CustomButton
+                        label='Previous'
+                        className='mb-2 bg-black hover:bg-gray-800'
                         onClick={() => setCurrentStep(2)}
-                        className="mb-6 bg-black hover:bg-gray-800"
                     />
 
-                    <CustomButton 
-                        label="Next"
+                    <CustomButton
+                        label='Next'
                         onClick={() => setCurrentStep(4)}
-                        className="mt-6"
                     />
                 </>
             ) : currentStep == 4 ? (
                 <>
-                    <h2 className="mb-6 text-2xl">Location</h2>
+                    <h2 className='mb-6 text-2xl'>Location</h2>
 
-                    <div className="pt-3 pb-6 space-y-4">
+                    <div className='pt-3 pb-6 space-y-4'>
                         <SelectCountry 
-                            value= {dataCountry}
-                            onChange={(value) => setDatacountry(value as SelectCountryValue)}
+                            value={dataCountry}
+                            onChange={(value) => setDataCountry(value as SelectCountryValue)}
                         />
                     </div>
 
-                    <CustomButton 
-                        label="Previous"
+                    <CustomButton
+                        label='Previous'
+                        className='mb-2 bg-black hover:bg-gray-800'
                         onClick={() => setCurrentStep(3)}
-                        className="mb-6 bg-black hover:bg-gray-800"
                     />
 
-                    <CustomButton 
-                        label="Next"
+                    <CustomButton
+                        label='Next'
                         onClick={() => setCurrentStep(5)}
-                        className="mt-6"
                     />
                 </>
-            
-            ) : currentStep == 5 ? (
+            ) : (
                 <>
-                    <h2 className="mb-6 text-2xl">Image</h2>
+                    <h2 className='mb-6 text-2xl'>Image</h2>
 
-                    <div className="pt-3 pb-6 space-y-4">
-                        <div className="py-4 px-6 bg-gray-600 text-white rounded-xl">
-                            <input 
+                    <div className='pt-3 pb-6 space-y-4'>
+                        <div className='py-4 px-6 bg-gray-600 text-white rounded-xl'>
+                            <input
                                 type="file"
-                                accept="image/*"
+                                accept='image/*'
                                 onChange={setImage}
                             />
                         </div>
 
                         {dataImage && (
-                            <div className="w-[200px] h-[150px] relative">
+                            <div className='w-[200px] h-[150px] relative'>
                                 <Image
                                     fill
-                                    alt='uploaded image'
+                                    alt="Uploaded image"
                                     src={URL.createObjectURL(dataImage)}
-                                    className="h-full object-cover rounded-xl"
+                                    className='w-full h-full object-cover rounded-xl'
                                 />
                             </div>
                         )}
-
                     </div>
-                        
 
-                   {errors.map((error, index) => {
-                        return(
+                    {errors.map((error, index) => {
+                        return (
                             <div
                                 key={index}
-                                className="p-5 mb-4 bg-airbnb text-white rounded-xl opacity-80"
+                                className='p-5 mb-4 bg-airbnb text-white rounded-xl opacity-80'
                             >
                                 {error}
                             </div>
                         )
                     })}
 
-                    <CustomButton 
-                        label="Previous"
+                    <CustomButton
+                        label='Previous'
+                        className='mb-2 bg-black hover:bg-gray-800'
                         onClick={() => setCurrentStep(4)}
-                        className="mb-6 bg-black hover:bg-gray-800"
                     />
 
-                    <CustomButton 
-                        label="Submit"
+                    <CustomButton
+                        label='Submit'
                         onClick={submitForm}
-                        className="mt-6"
                     />
                 </>
-
-            ) : (
-                <p>test</p>
-            ) }
-            
+            )}
         </>
     )
 
-    return(
+    return (
         <>
             <Modal
                 isOpen={addPropertyModal.isOpen}
                 close={addPropertyModal.close}
-                label= 'Add Property'
+                label="Add property"
                 content={content}
-            ></Modal>
+            />
         </>
     )
-}}
+}
 
 export default AddPropertyModal;

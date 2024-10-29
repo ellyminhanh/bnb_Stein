@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "./components/Navbar/Navbar";
 import LoginModal from "./components/Modals/LogInModal";
+import SearchModal from "./components/Modals/SearchModal";
 import SignupModal from "./components/Modals/SignupModal";
 import AddPropertyModal from "./components/Modals/AddPropertyModal";
 
@@ -40,6 +41,7 @@ export default function RootLayout({
           {children}
         </div>
         <LoginModal />
+        <SearchModal />
         <SignupModal />
         <AddPropertyModal />
       </body>
