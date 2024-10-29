@@ -12,7 +12,8 @@ export type SearchQuery = {
 
 interface SearchModalStore {
     isOpen: boolean;
-    open :() => void;
+    step: string;
+    open :(step : string) => void;
     close: () => void;
     query: SearchQuery;
     setQuery: (query: SearchQuery) => void;
@@ -20,7 +21,8 @@ interface SearchModalStore {
 
 const useSearchModal = create<SearchModalStore>((set) => ({
     isOpen: false,
-    open: () => set({ isOpen: true }),
+    step: '',
+    open: (step) => set({ isOpen: true, step: step }),
     close : () => set({ isOpen: false}),
     setQuery: (query: SearchQuery) => set ({query:query}),
     query: {
